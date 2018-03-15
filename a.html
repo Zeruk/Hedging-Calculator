@@ -13,30 +13,31 @@
 		<table>
 				<tr>
 					<td>Начальная дата</td>
-					<td><input id="beginDate" onchange="computeHedge()" type="text" placeholder="Начальная дата" value="2018-03-15">
+					<td><input id="beginDate" type="text" placeholder="Начальная дата" value="2018-03-15">
 					</td>
 				</tr>
 				<tr>
 					<td>Конечная дата</td>
-					<td><input id="endDate" onchange="computeHedge()" type="text" placeholder="Конечная дата" value="2018-04-15"></td>
+					<td><input id="endDate"type="text" placeholder="Конечная дата" value="2018-04-15"></td>
 				</tr>
 				<tr>
 					<td>Текущая ставка %%</td>
-					<td><input id="currentRate" onchange="computeHedge()" type="text" placeholder="Текущая ставка %%" value="11"></td>
+					<td><input id="currentRate" type="text" placeholder="Текущая ставка %%" value="11"></td>
 				</tr>
 				<tr>
 					<td>Курс валюты</td>
-					<td><input id="currency" onchange="computeHedge()" type="text" placeholder="Курс валюты" value="67.5"></td>
+					<td><input id="currency" type="text" placeholder="Курс валюты" value="67.5"></td>
 				</tr>
 				<tr>
 					<td>Страйк 1</td>
-					<td><input id="strike1" onchange="computeHedge()" type="text" placeholder="Страйк 1" value="68"></td>
+					<td><input id="strike1" type="text" placeholder="Страйк 1" value="68"></td>
 				</tr>
 				<tr>
 					<td>Страйк 2</td>
-					<td><input id="strike2" onchange="computeHedge()" type="text" placeholder="Страйк 2" value="63.9"></td>
+					<td><input id="strike2" type="text" placeholder="Страйк 2" value="63.9"></td>
 				</tr>
 			</table>
+			<button id="computeHedge" onclick="computeHedge()">Посчитать</button>
 		<table id="results">
 		</table>
 	</section>

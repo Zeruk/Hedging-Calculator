@@ -68,45 +68,13 @@ function addMonths(startDate,numberOfMonths){
 	return new Date(result.setMonth(result.getMonth()+numberOfMonths));
 };
 
-
 function computeForwardCurrency(beginDate,endDate,currentRate,currency){
 	return currentRate/365*daysBetween(endDate,beginDate)*currency+currency;
-}
+};
 
 function daysBetween(d1,d2){
 	return Math.round(Math.abs(d2.valueOf()-d1.valueOf())/864e5);
-}
-
-function computeStrike(strike,currency,volatility,fullYears){
-	var d1 = (Math.log(currency/strike)+0.5*Math.pow(volatility,2)*
-			fullYears)/(volatility*Math.pow(fullYears,0.5)),
-		d2 = d1-volatility*Math.pow(fullYears,0.5),
-		Nd1 = normalDistrib(d1),	//N(d1)
-		Nd2 = normalDistrib(d2),	//N(d2)
-		Nfd1 = normalDistribF(d1),	//N'(d1)
-		N_d1 = normalDistrib(-d1),	//N(-d1)
-		N_d2 = normalDistrib(-d2),	//N(-d2)
-		call =currency*Nd1-strike*Nd2,
-		put =strike*N_d2-currency*N_d1;
-	return {d1: d1, d2:d2, Nd1:Nd1, Nd2:Nd2, Nfd1:Nfd1,
-		 N_d1:N_d1, N_d2:N_d2,call:call,put:put};
 };
-
-	addEventListener('DOMContentLoaded', function () {
-		pickmeup('input#beginDate', {
-			position       	: 'right',
-			hide_on_select 	: true,
-			format			: 'Y-m-d'
-		});
-		pickmeup('input#endDate', {
-			position       	: 'right',
-			hide_on_select 	: true,
-			format			: 'Y-m-d',
-			default_date	: false
-		});
-});
-jQuery('input#endDate').bind("pickmeup-change", computeHedge(), false);
-jQuery('input#beginDate').bind("pickmeup-change", computeHedge(), false);
 
 function normalcdf(X){   //HASTINGS.  MAX ERROR = .000001
 	var T=1/(1+.2316419*Math.abs(X));
@@ -116,11 +84,11 @@ function normalcdf(X){   //HASTINGS.  MAX ERROR = .000001
 		Prob=1-Prob
 	}
 	return Prob
-}  
+};
 
 function normalDistribF(z){
 	return Math.pow((2*Math.PI),-0.5)*Math.pow(Math.E,-(z*z)/2);
-} 
+};
 
 function normalDistrib(X,variant) {
     Z=X;
@@ -144,4 +112,33 @@ function normalDistrib(X,variant) {
 		}
 	}
     return Prob;
-}
+};
+
+function computeStrike(strike,currency,volatility,fullYears){
+	var d1 = (Math.log(currency/strike)+0.5*Math.pow(volatility,2)*
+			fullYears)/(volatility*Math.pow(fullYears,0.5)),
+		d2 = d1-volatility*Math.pow(fullYears,0.5),
+		Nd1 = normalDistrib(d1),	//N(d1)
+		Nd2 = normalDistrib(d2),	//N(d2)
+		Nfd1 = normalDistribF(d1),	//N'(d1)
+		N_d1 = normalDistrib(-d1),	//N(-d1)
+		N_d2 = normalDistrib(-d2),	//N(-d2)
+		call =currency*Nd1-strike*Nd2,
+		put =strike*N_d2-currency*N_d1;
+	return {d1: d1, d2:d2, Nd1:Nd1, Nd2:Nd2, Nfd1:Nfd1,
+		 N_d1:N_d1, N_d2:N_d2,call:call,put:put};
+};
+
+addEventListener('DOMContentLoaded', function () {
+    pickmeup('input#beginDate', {
+        position       	: 'right',
+        hide_on_select 	: true,
+        format			: 'Y-m-d'
+    });
+    pickmeup('input#endDate', {
+        position       	: 'right',
+        hide_on_select 	: true,
+        format			: 'Y-m-d',
+        default_date	: false
+    });
+});
