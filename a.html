@@ -1,141 +1,44 @@
 <!DOCTYPE html>
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>Хэджирование</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>Хежирование</title>
 <link type="text/css" href="a_files/pickmeup.css" rel="stylesheet">
 <link type="text/css" href="a_files/demo.css" rel="stylesheet" media="screen">
 <script src="a_files/pickmeup.js" type="text/javascript"></script>
-<script type='text/javascript' src='https://test.fontvielle.ru/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='a_files/jquery.js'></script>
+<script type='text/javascript' src='a_files/hedging.js'></script>
 </head>
 	<body>
-	<h1>Хэджирование</h1>
+	<h1>Хеджирование</h1>
 	<section>
 		<table>
 				<tr>
 					<td>Начальная дата</td>
-					<td><input id="beginDate" type="text" placeholder="Начальная дата" value="10-03-2018">
+					<td><input id="beginDate" onchange="computeHedge()" type="text" placeholder="Начальная дата" value="2018-03-15">
 					</td>
 				</tr>
 				<tr>
 					<td>Конечная дата</td>
-					<td><input id="endDate" type="text" placeholder="Конечная дата" value="11-03-2018"></td>
+					<td><input id="endDate" onchange="computeHedge()" type="text" placeholder="Конечная дата" value="2018-04-15"></td>
 				</tr>
 				<tr>
 					<td>Текущая ставка %%</td>
-					<td><input id="currentRate" type="text" placeholder="Текущая ставка %%" value="11"></td>
+					<td><input id="currentRate" onchange="computeHedge()" type="text" placeholder="Текущая ставка %%" value="11"></td>
 				</tr>
 				<tr>
 					<td>Курс валюты</td>
-					<td><input id="currency" type="text" placeholder="Курс валюты" value="67.5"></td>
+					<td><input id="currency" onchange="computeHedge()" type="text" placeholder="Курс валюты" value="67.5"></td>
 				</tr>
 				<tr>
 					<td>Страйк 1</td>
-					<td><input id="strike1" type="text" placeholder="Страйк 1" value="68"></td>
+					<td><input id="strike1" onchange="computeHedge()" type="text" placeholder="Страйк 1" value="68"></td>
 				</tr>
 				<tr>
 					<td>Страйк 2</td>
-					<td><input id="strike2" type="text" placeholder="Страйк 2" value="63.9"></td>
+					<td><input id="strike2" onchange="computeHedge()" type="text" placeholder="Страйк 2" value="63.9"></td>
 				</tr>
 			</table>
-		<table>
-			<tr>
-				<td>Ст-ть хеджа по связке опционов (Руб за Евро)</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>Ст-ть хеджа по связке опционов (в %%)</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>Ст-ть хеджа по форварду (Руб за Евро)</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>Ст-ть хеджа по форварду (в %%)</td>
-				<td></td>
-			</tr>
+		<table id="results">
 		</table>
 	</section>
-<script>
-function addMonths(startDate,numberOfMonths){
-	result = new Date(startDate);
-	return new Date(result.setMonth(result.getMonth()+numberOfMonths));
-};
-
-function computeHedge(monthForHedge){
-	var beginDate = new Date(jQuery("#beginDate").val()),
-	endDate = new Date(jQuery("#endDate").val()),
-	currentRate = jQuery("#currentRate").val(),
-	currency = jQuery("#currency").val(),
-	daysInYear = (new Date(addMonths(beginDate,monthForHedge).getYear()+1,0) - new Date(addMonths(beginDate,monthForHedge).getYear(),0))/864e5,
-	daysUntillExpiration = Math.round((addMonths(beginDate,monthForHedge).valueOf()-beginDate.valueOf())/86400000),
-	volatility = 0.14,
-	fullYears=daysUntillExpiration/daysInYear>0 ? daysUntillExpiration/daysInYear : Math.pow(10,-10),
-	strike1 = jQuery("#strike1").val(),
-	strike1Val = computeStrike(),
-	strike2 = jQuery("#strike2").val(),
-	strikeVal2 = computeStrike();
-	console.log(0);
-};
-
-function computeStrike(strike,currency,volatility,fullYears){
-	var d1 = (Math.log(currency/strike)+0.5*Math.pow(volatility,2)*fullYears)/(volatility*Math.pow(fullYears,0.5)),
-		d2 = d1-volatility*Math.pow(fullYears,0.5),
-		Nd1 = normalDistrib(d1),
-		Nd2 = normalDistrib(d2),
-		Nfd1 = normalDistribF(d1),
-		N_d1 = normalDistrib(-d1),
-		N_d2 = normalDistrib(-d2);
-	return {d1: d1, d2:d2, Nd1:Nd1, Nd2:Nd2, Nfd1:Nfd1, N_d1:N_d1, N_d2:N_d2};
-};
-
-function normalDistribF(z){
-	return Math.pow((2*Math.PI),-0.5)*Math.pow(Math.E,-(z*z)/2);
-}
-
-	addEventListener('DOMContentLoaded', function () {
-		pickmeup('input#beginDate', {
-			position       : 'right',
-			hide_on_select : true,
-			format	: 'Y-m-d'
-		});
-		pickmeup('input#endDate', {
-			position       : 'right',
-			hide_on_select : true,
-			format	: 'Y-m-d'
-		});
-		computeHedge(1);
-});
-
-function normalcdf(X){   //HASTINGS.  MAX ERROR = .000001
-	var T=1/(1+.2316419*Math.abs(X));
-	var D=.3989423*Math.exp(-X*X/2);
-	var Prob=D*T*(.3193815+T*(-.3565638+T*(1.781478+T*(-1.821256+T*1.330274))));
-	if (X>0) {
-		Prob=1-Prob
-	}
-	return Prob
-}   
-
-function normalDistrib(X) {
-    Z=X;
-    M=0;
-    SD=1;
-    with (Math) {
-		if (SD<0) {
-			alert("The standard deviation must be nonnegative.")
-		} else if (SD==0) {
-		    if (Z<M){
-		        Prob=0
-		    } else {
-			    Prob=1
-			}
-		} else {
-			Prob=normalcdf((Z-M)/SD);
-			Prob=round(100000*Prob)/100000;
-		}
-	}
-    return Prob;
-}
-</script>
 </body>
 </html>
