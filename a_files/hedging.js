@@ -7,7 +7,7 @@ function computeHedge(){
 	volatility = 0.14,
 	strike1 = Number(jQuery("#strike1").val()),
 	strike2 = Number(jQuery("#strike2").val()),
-	daysInYear = 365,// new Date(addMonths(beginDate,monthForHedge).getYear(),0)),
+	daysInYear = 365,
 	endDate = beginDate;
 
 	for(var i = daysBetween(fullEndDate, beginDate)/30; i>0; i--){
@@ -21,11 +21,6 @@ function computeHedge(){
 		hedgeValuePerCent = hedgeValueInCurr/currency*100,
 		hedgeValueForwardInCurr = currencyForward-currency,
 		hedgeValueForwardPerCent = hedgeValueForwardInCurr/currency*100;
-		console.log("daysUntillExpiration");console.log(daysUntillExpiration);
-		console.log("daysInYear");console.log(daysInYear);
-		console.log("strike1Val");console.log(strike1Val);
-		console.log("strike2Val");console.log(strike2Val);
-	//for(var i = daysBetween(endDate, beginDate)/30; i>0; i--){
 		jQuery("#results > tbody:nth-child(1) > tr:nth-child(1)").append("<td>"
 			+endDate.getDate().toString()+'.'+(endDate.getMonth()+1).toString()+'.'+
 			(endDate.getFullYear()).toString()+"</td>");
@@ -95,21 +90,11 @@ function normalDistrib(X,variant) {
     M=0;
     SD=1;
     with (Math) {
-		if (SD<0) {
-			alert("The standard deviation must be nonnegative.")
-		} else if (SD==0) {
-		    if (Z<M){
-		        Prob=0
-		    } else {
-			    Prob=1
-			}
-		} else {
-			if(variant===1)
-				Prob=normalDistribF((Z-M)/SD);
-			else
-				Prob=normalcdf((Z-M)/SD);
-			Prob=round(100000000*Prob)/100000000;
-		}
+        if(variant===1)
+            Prob=normalDistribF((X));
+        else
+            Prob=normalcdf((X));
+        Prob=round(100000000*Prob)/100000000;
 	}
     return Prob;
 };
