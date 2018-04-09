@@ -4,15 +4,19 @@ function computeHedge(){
 	fullEndDate = new Date(jQuery("#endDate").val()),
 	currentRate = Number(jQuery("#currentRate").val()/100),
 	currency = Number(jQuery("#currency").val()),
+	currName = jQuery("#currName").val(),
 	volatility = 0.14,
 	strike1 = Number(jQuery("#strike1").val()),
 	strike2 = Number(jQuery("#strike2").val()),
 	daysInYear = 365,
+	USbet = 1.75,
+	RUbet = 7.25,
 	endDate = beginDate;
 
 	for(var i = daysBetween(fullEndDate, beginDate)/30; i>0; i--){
 		var monthForHedge=daysBetween(endDate, beginDate)/30,
-		currencyForward = computeForwardCurrency(beginDate,endDate,currentRate,currency),
+		currencyForward = computeForwardCurrency(beginDate,
+			endDate,currentRate,currName,currency,RUbet,USbet),
 		daysUntillExpiration = daysBetween(endDate, beginDate),
 		fullYears=daysUntillExpiration/daysInYear>0 ? daysUntillExpiration/daysInYear : Math.pow(10,-10),
 		strike1Val = computeStrike(strike1,currencyForward,volatility,fullYears),
@@ -63,7 +67,12 @@ function addMonths(startDate,numberOfMonths){
 	return new Date(result.setMonth(result.getMonth()+numberOfMonths));
 };
 
-function computeForwardCurrency(beginDate,endDate,currentRate,currency){
+function computeForwardCurrency(beginDate,endDate,currentRate,currName,
+				currency,RUbet,USbet){
+	if(currName == "USD"){
+		return currency+currency*((RUbet-USbet)/100/
+			(daysBetween(endDate,beginDate))*365);
+	}
 	return currentRate/365*daysBetween(endDate,beginDate)*currency+currency;
 };
 
