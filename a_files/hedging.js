@@ -58,12 +58,10 @@ function computeHedge(){
 		if(i==1 && endDate !== fullEndDate){
 			i+=1;
 			endDate=fullEndDate;
-			console.log("adsad");
 		}else{
 			endDate = addMonths(endDate,1);
 		}
 		i-=1;
-		console.log(endDate === fullEndDate, i);
 	};
 
 };
