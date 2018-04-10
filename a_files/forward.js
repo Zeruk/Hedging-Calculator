@@ -33,3 +33,18 @@ function computeForwardCurrency(beginDate,endDate,currName,
 function daysBetween(d1,d2){
 	return Math.round(Math.abs(d2.valueOf()-d1.valueOf())/864e5);
 };
+
+
+addEventListener('DOMContentLoaded', function () {
+    pickmeup('input#beginDate', {
+        position       	: 'right',
+        hide_on_select 	: true,
+        format			: 'Y-m-d'
+    });
+    pickmeup('input#endDate', {
+        position       	: 'right',
+        hide_on_select 	: true,
+        format			: 'Y-m-d',
+        default_date	: false
+    });
+});
