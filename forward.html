@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>Хежирование</title>
+<link type="text/css" href="a_files/pickmeup.css" rel="stylesheet">
+<link type="text/css" href="a_files/demo.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="a_files/jquery.js"></script>
+<script type="text/javascript" src="a_files/pickmeup.js"></script>
+<script type="text/javascript" src="a_files/forward.js"></script>
+</head>
+	<body>
+	<h1>Хеджирование</h1>
+	<section>
+		<table>
+				<tr>
+					<td>Начальная дата</td>
+					<td><input id="beginDate" type="text" placeholder="Начальная дата" value="2018-03-15">
+					</td>
+				</tr>
+				<tr>
+					<td>Конечная дата</td>
+					<td><input id="endDate"type="text" placeholder="Конечная дата" value="2018-04-15"></td>
+				</tr>
+				<tr>
+					<td>Валюта</td>
+					<td>
+						<select id="currName">
+							<option value="USD">USD</option>
+							<option value="EUR">EUR</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Ключевая ставка ЦБ РФ</td>
+					<td><input id="RUbet" type="text" value="7.25"></td>
+				</tr>
+				<tr>
+					<td>Ставка ЕЦБ</td>
+					<td><input id="EUbet" type="text" value="0.00"></td>
+				</tr>
+				<tr>
+					<td>Ставка ФРС</td>
+					<td><input id="USbet" type="text" value="1.75"></td>
+				</tr>
+				<tr>
+					<td>Курс на начальную дату</td>
+					<td><input id="currencyValue" type="text" value="60"></td>
+				</tr>
+			</table>
+			<button onclick="computeForward()">Посчитать</button>
+		<h2 id="forwResult"></h2>
+	</section>
+</body>
+</html>
